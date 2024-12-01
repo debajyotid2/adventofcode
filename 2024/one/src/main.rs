@@ -1,7 +1,6 @@
 //! Advent of Code day 1
 
 use std::fs;
-use std::iter::zip;
 
 fn main() {
     let mut arr1 = Vec::<i32>::new();
@@ -25,8 +24,17 @@ fn main() {
 
     // Part 1: Calculate Manhattan distance
     let mut dist: i64 = 0;
-    for (a, b) in zip(arr1, arr2) {
-        dist = dist + (a-b).abs() as i64;
+    for ctr in 0..arr1.len() {
+        dist += (arr1[ctr] - arr2[ctr]).abs() as i64;
     }
-    println!("{}", dist);
+    println!("Distance: {}", dist);
+    
+    // Part 2: Calculate similarity score
+    let mut score: i64 = 0;
+    for a in arr1.iter() {
+        let counts: i64 = arr2.iter().filter(|b| *b == a).count() as i64;
+        score += (*a as i64) * counts;
+    }
+    println!("Score: {}", score);
+
 }
