@@ -1,0 +1,35 @@
+//! Advent of Code day 2
+
+use std::fs;
+
+fn main() {
+    let mut safe: u32 = 0;
+    let mut un_safe: u32 = 0;
+    for line in fs::read_to_string("./input").unwrap().lines() {
+        // Parse a single report
+        let report: Vec<i32> = line
+                                .trim()
+                                .split(" ")
+                                .map(|x| x.parse::<i32>().unwrap())
+                                .collect();
+
+        // Get forward difference of reports
+        let mut diffs = Vec::<i32>::new();
+        for ctr in 0..(report.len()-1) {
+            let diff = report[ctr+1] - report[ctr];
+            let abs_diff = diff.abs();
+            if abs_diff < 1 || abs_diff > 2 {
+               un_safe += 1;
+                break;
+            }
+            if ctr == 0 {
+                continue;
+            }
+
+        }
+
+        // Check for sign change in diff, i.e. crest or trough in report
+        
+        println!("{:?}: {:?}", diff, sth);
+    }
+}
