@@ -72,11 +72,28 @@ def right_diagonals(grid: list[str]) -> list[str]:
         i += 1
     return diags
 
+def tile_search(grid: list[str]) -> int:
+    count = 0
+    for i in range(len(grid)-2): 
+        for j in range(len(grid[0])-3):
+            diag_1 = "".join([grid[i][j], grid[i+1][j+1], grid[i+2][j+2]])
+            diag_2 = "".join([grid[i+2][j], grid[i+1][j+1], grid[i][j+2]])
+            if (diag_1 == "SAM" or diag_1 == "MAS") and \
+                (diag_2 == "SAM" or diag_2 == "MAS"):
+                count += 1
+    return count
+
 def main():
     with open("input", "r") as f:
         grid = f.readlines()
+
+    # Part one
     count = search(grid) + search(transpose(grid)) + search(left_diagonals(grid)) + search(right_diagonals(grid))
     print(f"Part one answer: {count}")
+
+    # Part two
+    count = tile_search(grid)
+    print(f"Part two answer: {count}")
 
 if __name__=="__main__":
     main()
