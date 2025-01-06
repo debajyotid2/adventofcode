@@ -21,8 +21,9 @@ def build_graph_and_paths(input_val: list[str]) -> tuple[Graph, list[int]]:
             graph[node] = []
     return graph, [list(map(int, val.split(","))) for val in input_val]
 
-def part_one(paths: list[list[int]], graph: Graph) -> int:
+def part_one(paths: list[list[int]], graph: Graph) -> tuple[int, list[int], list[int]]:
     middle_page_sum = 0
+    correct, incorrect = [], []
     for path in paths:
         left = []
         stop = False
@@ -33,7 +34,19 @@ def part_one(paths: list[list[int]], graph: Graph) -> int:
                 break
             left.append(el)
         if stop:
+            incorrect.append(path)
             continue
+        correct.append(path)
+        middle_page_sum += path[len(path) // 2]
+    return middle_page_sum, correct, incorrect
+
+def part_two(paths: list[list[int]], graph: Graph) -> int:
+    middle_page_sum = 0
+    for path in paths:
+        for i in range(len(path)):
+            for j in range(len(path)-i-1):
+                if path[j] in graph[path[j+1]]:
+                    path[j], path[j+1] = path[j+1], path[j]
         middle_page_sum += path[len(path) // 2]
     return middle_page_sum
 
@@ -43,8 +56,12 @@ def main():
     graph, paths = build_graph_and_paths(data)
     
     # Part one
-    middle_page_sum = part_one(paths, graph)
+    middle_page_sum, correct, incorrect = part_one(paths, graph)
     print(f"Part one answer: {middle_page_sum}")
+
+    # Part two
+    middle_page_sum = part_two(incorrect, graph)
+    print(f"Part two answer: {middle_page_sum}")
 
 if __name__=="__main__":
     main()
